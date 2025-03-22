@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_LINE 1024  // Definimos el tamaño máximo de línea
+
+// Función para leer el archivo CSV
+void leer_csv(const char *nombre_archivo) {
+    FILE *archivo = fopen(nombre_archivo, "r");  // Abrimos el archivo en modo lectura
+    if (archivo == NULL) {  // Si no se pudo abrir, mostramos un error
+        printf("Error: No se pudo abrir el archivo %s\n", nombre_archivo);
+        return;
+    }
+
+    char linea[MAX_LINE];  // Buffer para leer cada línea
+
+    // Leer línea por línea
+    while (fgets(linea, MAX_LINE, archivo)) {
+        printf("Línea leída: %s", linea);  // Imprimimos la línea para verificar la lectura
+    }
+
+    fclose(archivo);  // Cerramos el archivo después de leerlo
+}
+
+// Función principal
+int main() {
+    leer_csv("ventas.csv");  // Llamamos a la función para leer el archivo
+    return 0;
+}
