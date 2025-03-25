@@ -3,7 +3,7 @@
 
 char* trim_newline(char *str) {
     char *pos;
-    if ((pos = strchr(str, '\n')) != NULL)
-        *pos = '\0';
+    if((pos= strchr(str, ))!= NULL)
+        *pos =  ;
     return str;
 }
