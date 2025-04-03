@@ -22,3 +22,6 @@
 ## **Ayudante**
 - **Diego Duhalde** <br>
   <dduhalde@alumnos.uai.cl>
+
+## **Fecha de entrega**
+- **03/04/2025** <br>
