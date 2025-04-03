@@ -269,3 +269,106 @@ char* apo(int *cant_total_ordenes, struct orden *ordenes) {
 char* apd(int *cant_total_ordenes, struct orden *ordenes) {
     return promedio_pizzas(cant_total_ordenes, ordenes, 1);
 }
+
+
+/*───────────────────────────────────────────────────────*/
+/*             INGREDIENTE MÁS VENDIDO   ims             */
+/*───────────────────────────────────────────────────────*/
+char* ims(int *cant_total_ordenes, struct orden *ordenes) {
+    // Estructura que almacena el nombre de los ingredientes (como una sola cadena) y la cantidad total vendida
+    typedef struct { char ingredientes[100]; int total; } IngredienteCount;
+
+    // Arreglo que guardará hasta 100 combinaciones de ingredientes distintos
+    IngredienteCount lista[100] = {0};
+    int cantidad_ing = 0;  // Contador de ingredientes distintos encontrados
+
+    // Recorremos todas las órdenes
+    for (int i = 0; i < *cant_total_ordenes; i++) {
+        int encontrado = 0;  // Bandera para saber si el ingrediente ya está registrado
+
+        // Revisamos si ese conjunto de ingredientes ya está registrado
+        for (int j = 0; j < cantidad_ing; j++) {
+            if (strcmp(lista[j].ingredientes, ordenes[i].pizza_ingredients) == 0) {
+                lista[j].total += ordenes[i].cantidad;  // Si ya existe, sumamos la cantidad
+                encontrado = 1;
+                break;
+            }
+        }
+
+        // Si no se encontró, lo agregamos como nuevo
+        if (!encontrado && cantidad_ing < 100) {
+            strcpy(lista[cantidad_ing].ingredientes, ordenes[i].pizza_ingredients);  // Copiamos los ingredientes
+            lista[cantidad_ing].total = ordenes[i].cantidad;                         // Asignamos cantidad inicial
+            cantidad_ing++;  // Aumentamos el número de ingredientes únicos encontrados
+        }
+    }
+
+    // Buscamos el ingrediente con la mayor cantidad de ventas
+    int max = -1;  // Inicializamos el máximo con un valor bajo
+    char ingrediente_mas_vendido[100] = "";  // Guardará el nombre del ingrediente más vendido
+
+    for (int j = 0; j < cantidad_ing; j++) {
+        if (lista[j].total > max) {
+            max = lista[j].total;  // Actualizamos el máximo
+            strcpy(ingrediente_mas_vendido, lista[j].ingredientes);  // Guardamos el nombre
+        }
+    }
+
+    // Reservamos memoria para la cadena final con el resultado
+    char *resultado = malloc(150);
+    sprintf(resultado, "Ingrediente más vendido: %s (cantidad: %d)", ingrediente_mas_vendido, max);
+    return resultado;  // Devolvemos el resultado
+}
+
+
+/*───────────────────────────────────────────────────────*/
+/*          CANTIDAD DE PIZZAS POR CATEGORÍA   hp        */
+/*───────────────────────────────────────────────────────*/
+char* hp(int *cant_total_ordenes, struct orden *ordenes) {
+    // Estructura para agrupar y contar pizzas por categoría
+    typedef struct { char categoria[30]; int total; } ContadorCategoria;
+
+    ContadorCategoria lista[100] = {0};  // Arreglo para almacenar hasta 100 categorías diferentes
+    int nCategorias = 0;  // Contador de categorías únicas encontradas
+
+    // Recorre todas las órdenes registradas
+    for (int i = 0; i < *cant_total_ordenes; i++) {
+        int encontrada = 0;  // Bandera para saber si ya vimos esta categoría
+
+        // Comprobamos si la categoría ya fue agregada previamente a la lista
+        for (int j = 0; j < nCategorias; j++) {
+            if (strcmp(lista[j].categoria, ordenes[i].pizza_category) == 0) {
+                lista[j].total += ordenes[i].cantidad;  // Si ya está, le sumamos la cantidad vendida
+                encontrada = 1;
+                break;
+            }
+        }
+
+        // Si no se encontró la categoría en la lista, se agrega como nueva
+        if (!encontrada && nCategorias < 100) {
+            strcpy(lista[nCategorias].categoria, ordenes[i].pizza_category);  // Copiamos el nombre
+            lista[nCategorias].total = ordenes[i].cantidad;                   // Guardamos la cantidad
+            nCategorias++;  // Aumentamos el contador de categorías únicas
+        }
+    }
+
+    // Reservamos memoria para el string resultado (dinámico)
+    char *resultado = malloc(300);
+    strcpy(resultado, "Cantidad de pizzas por categoría vendidas: ");  // Mensaje inicial
+
+    // Recorremos las categorías registradas y formateamos el resultado
+    for (int j = 0; j < nCategorias; j++) {
+        char buffer[50];  // Buffer temporal para una línea del resultado
+
+        // Formateamos el nombre y total de la categoría
+        sprintf(buffer, "%s: %d", lista[j].categoria, lista[j].total);
+        strcat(resultado, buffer);  // Lo agregamos al string final
+
+        // Si no es la última categoría, agregamos una coma y espacio
+        if (j < nCategorias - 1) {
+            strcat(resultado, ", ");
+        }
+    }
+
+    return resultado;  // Devolvemos la cadena completa con los resultados
+}
