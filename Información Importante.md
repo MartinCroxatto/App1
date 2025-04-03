@@ -25,3 +25,12 @@
 
 ## **Fecha de entrega**
 - **03/04/2025** <br>
+
+## **Pasos para ejecutar la app**
+
+1. Se ingresa a la carpeta `tarea1/`.  
+2. Se compila escribiendo `make` en la consola.  
+3. Se ejecuta con:  
+   ```bash
+   ./app1 ventas.csv pms pls dms ...
+   ```  
