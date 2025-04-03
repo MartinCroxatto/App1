@@ -10,7 +10,7 @@
 - **Antonio de Solminihac** <br>
   <andesolminihac@alumnos.uai.cl>
 
-- **Martin Croxatto** <br>
+- **Martín Croxatto** <br>
   <mcroxatto@alumnos.uai.cl>
 
 
