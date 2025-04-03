@@ -67,3 +67,64 @@ char* pms(int *cant_total_ordenes, struct orden *ordenes) {
 char* pls(int *cant_total_ordenes, struct orden *ordenes) {
     return pizza_extrema(cant_total_ordenes, ordenes, 0);
 }
+
+
+/*─────────────────────────────────────────────────────────────────*/
+/*       FUNCIÓN GENERAL PARA FECHAS MÁS/MENOS DINERO   dms/dls    */
+/*─────────────────────────────────────────────────────────────────*/
+char* fecha_extrema_dinero(int *cant_total_ordenes, struct orden *ordenes, int buscar_max) {
+    typedef struct { char date[11]; double monto_total; } FechaVenta;
+    FechaVenta fechas[100] = {0};  // Arreglo para almacenar fechas y montos totales
+    int nFechas = 0;
+
+    // Recorre todas las órdenes
+    for (int i = 0; i < *cant_total_ordenes; i++) {
+        int ya_existe = 0;
+
+        // Busca si la fecha ya está en el arreglo `fechas`
+        for (int j = 0; j < nFechas; j++) {
+            if (strcmp(fechas[j].date, ordenes[i].order_date) == 0) {
+                fechas[j].monto_total += ordenes[i].total_price;  // Suma el monto si ya existe
+                ya_existe = 1;
+                break;
+            }
+        }
+
+        // Si no existe, agrega una nueva entrada en `fechas`
+        if (!ya_existe && nFechas < 100) {
+            strcpy(fechas[nFechas].date, ordenes[i].order_date);
+            fechas[nFechas].monto_total = ordenes[i].total_price;
+            nFechas++;
+        }
+    }
+
+    // Encuentra la fecha con el valor extremo (máximo o mínimo)
+    double valor_extremo = fechas[0].monto_total;
+    char mejor_fecha[11];
+    strcpy(mejor_fecha, fechas[0].date);
+
+    for (int j = 1; j < nFechas; j++) {
+        if ((buscar_max && fechas[j].monto_total > valor_extremo) || 
+            (!buscar_max && fechas[j].monto_total < valor_extremo)) {
+            valor_extremo = fechas[j].monto_total;
+            strcpy(mejor_fecha, fechas[j].date);
+        }
+    }
+
+    // Crea el resultado como una cadena dinámica
+    char *resultado = malloc(150);
+    sprintf(resultado, "Fecha %s ventas en dinero: %s (recaudado: %.2f)",
+            buscar_max ? "mas" : "menos",
+            mejor_fecha,
+            valor_extremo);
+    return resultado;  // Devuelve la cadena con el resultado
+}
+
+char* dms(int *cant_total_ordenes, struct orden *ordenes) {
+    return fecha_extrema_dinero(cant_total_ordenes, ordenes, 1);
+}
+
+char* dls(int *cant_total_ordenes, struct orden *ordenes) {
+    return fecha_extrema_dinero(cant_total_ordenes, ordenes, 0);
+}
+
