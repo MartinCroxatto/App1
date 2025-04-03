@@ -5,7 +5,7 @@
   <jadelcampo@alumnos.uai.cl>
 
 - **Martín Araya** <br>
-  <correo@alumnos.uai.cl>
+  <martinvaraya@alumnos.uai.cl>
 
 - **Antonio de Solminihac** <br>
   <andesolminihac@alumnos.uai.cl>
