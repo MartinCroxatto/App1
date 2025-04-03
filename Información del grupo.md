@@ -8,7 +8,7 @@
   <correo@alumnos.uai.cl>
 
 - **Antonio de Solminihac** <br>
-  <correo@alumnos.uai.cl>
+  <andesolminihac@alumnos.uai.cl>
 
 - **Martin Croxatto** <br>
   <mcroxatto@alumnos.uai.cl>
